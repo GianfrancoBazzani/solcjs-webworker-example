@@ -1,4 +1,4 @@
-importScripts('https://binaries.soliditylang.org/bin/soljson-v0.8.19+commit.7dd6d404.js')
+//importScripts('https://binaries.soliditylang.org/bin/soljson-v0.8.19+commit.7dd6d404.js')
 import wrapper from 'solc/wrapper';
 
 self.addEventListener('message', (e) => {
@@ -19,6 +19,7 @@ self.addEventListener('message', (e) => {
         }
     };
 
+    importScripts(`https://binaries.soliditylang.org/bin/${e.data.compilerBin}`)
     const compiler = wrapper(self.Module)
     console.log(`Solc version: ${compiler.version()}`)
 
