@@ -19,11 +19,17 @@ self.addEventListener('message', (e) => {
         }
     };
 
+    function findImports(path) {
+        return {
+            contents:
+              e.data.sourceFiles[path]
+          };
+      }
+
     importScripts(`https://binaries.soliditylang.org/bin/${e.data.compilerBin}`)
     const compiler = wrapper(self.Module)
-    console.log(`Solc version: ${compiler.version()}`)
 
     self.postMessage({
-        output: JSON.parse(compiler.compile(JSON.stringify(sourceCode)))
+        output: JSON.parse(compiler.compile(JSON.stringify(sourceCode), { import: findImports } ))
     })
 }, false)
