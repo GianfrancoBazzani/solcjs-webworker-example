@@ -2,23 +2,17 @@
 import wrapper from 'solc/wrapper';
 
 self.addEventListener('message', (e) => {
-    const contractCode = e.data.contractCode
-    const sourceCode = {
-        language: 'Solidity',
-        sources: {
-            contract: {
-                content: contractCode,
-            }
-        },
-        settings: {
-            outputSelection: {
-                '*': {
-                    '*': ['*']
-                }
+    
+    let solcInput = e.data.solcInput;
+    solcInput['language'] = 'Solidity';
+    solcInput['settings'] = {
+        outputSelection: {
+            '*': {
+                '*': ['*']
             }
         }
     };
-
+    
     function findImports(path) {
         return {
             contents:
@@ -30,6 +24,6 @@ self.addEventListener('message', (e) => {
     const compiler = wrapper(self.Module)
 
     self.postMessage({
-        output: JSON.parse(compiler.compile(JSON.stringify(sourceCode), { import: findImports } ))
+        output: JSON.parse(compiler.compile(JSON.stringify(solcInput), { import: findImports } ))
     })
 }, false)
